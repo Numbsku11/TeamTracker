@@ -47,13 +47,19 @@ void processCommand(const std::string& command)
 
 
 
-void main()
+int main()
 {
     while (true)
     {
-        std::string option; 
-        std::cin >> option;
+        std::string starterString = ""; 
+        std::cin >> starterString;
         
-        processCommand(option);
+        // takes the string from above and changes every character to be lowercase 
+        std::transform(starterString.begin(),starterString.end(),
+        starterString.begin() ,[](unsigned char c) {return std::tolower(c);});
+    
+        std::cout << "debug: lowerstring: \t\n";
+
+        processCommand(starterString);
     }
 }
