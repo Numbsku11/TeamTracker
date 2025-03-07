@@ -1,4 +1,5 @@
 #include <headers.h> 
+namespace fs = std::filesystem;
 bool debugBool = 0; 
 
 void csvHandle()
@@ -8,7 +9,8 @@ void csvHandle()
 
 void mkdirHandle()
 {
-
+    fs::path file = "funk";
+    std::cout << fs::current_path(); 
 }
 
 
