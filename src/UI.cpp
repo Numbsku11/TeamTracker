@@ -1,7 +1,9 @@
-#include <ftxui/component/screen_interactive.hpp>
-#include <ftxui/dom/elements.hpp>
+#include <ftxui/component/component.hpp> // For Renderer
+#include <ftxui/component/screen_interactive.hpp> // For ScreenInteractive
+#include <ftxui/dom/elements.hpp> // For table rendering
 #include <vector>
 #include <string>
+#include <iostream>
 
 using namespace ftxui;
 
@@ -14,13 +16,7 @@ int main() {
         {"4", "David", "35", "Teacher"}
     };
 
-    Elements rows;cmd /c chcp 65001>nul && C:\msys64\ucrt64\bin\gcc.exe -fdiagnostics-color=always -g "G:\VSC Project\Teamtracker\src\UI.cpp" -o "G:\VSC Project\Teamtracker\src\UI.exe"
-    G:\VSC Project\Teamtracker\src\UI.cpp:1:10: fatal error: ftxui/component/screen_interactive.hpp: No such file or directory
-        1 | #include <ftxui/component/screen_interactive.hpp>
-          |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    compilation terminated.
-    
-    Build finished with error(s).
+    Elements rows;
     for (const auto& row : data) {
         Elements cols;
         for (const auto& cell : row) {
