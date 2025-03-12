@@ -1,8 +1,31 @@
+//
+
+//
 #include <headers.h> 
 namespace fs = std::filesystem;
 bool debugBool = 0; 
 
-void csvHandle()
+struct Teams
+{
+    int teamID;
+    std::string teamName;
+    std::string teamMembers;
+    int teamScore;
+};
+struct Individuals
+{
+    int IndividualID;
+    std::string IndividualFirstName;
+    std::string IndividualLastName;
+    int individualScore;
+};
+
+void saveTeams()
+{
+
+}
+
+void extractionHandle()
 {
     
 }
@@ -37,7 +60,7 @@ StringCodes hashString(const std::string& SourceString)
     if (SourceString == "debug")  return StringCodes::debug;
     if (SourceString == "clear")  return StringCodes::clear;
     if (SourceString == "junk")  return StringCodes::junkPrinter;
-    if (SourceString == "") return StringCodes::exit;
+    if (SourceString == "exit") return StringCodes::exit;
     return StringCodes::unknown;
 }
 // handles the switch case by matching the given command from stringCodes 
