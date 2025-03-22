@@ -4,30 +4,31 @@
     "tasks": [
         {
             "type": "cppbuild",
-            "label": "C/C++: g++.exe build active file",
-            "command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
-            "args": [
-                "-fdiagnostics-color=always",
-                "-g",
-                "${file}",
-                "-o",
-                "${workspaceFolder}/bin/${fileBasenameNoExtension}.exe",
-                "-I", "${workspaceFolder}/include/",
-                "-I", "${workspaceFolder}/include/ftxui/",
-                "-L", "${workspaceFolder}/lib/",
-                "-lftxui-component",
-                "-lftxui-dom",
-                "-lftxui-screen",
-                "-lstdc++fs"
-            ],
-            "options": {
-                "cwd": "${fileDirname}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "group": "build",
-            "detail": "compiler: C:\\msys64\\ucrt64\\bin\\g++.exe"
-        }
+"label": "C/C++: g++.exe build active file",
+"command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+"args": [
+    "-fdiagnostics-color=always",
+    "-g",
+    "${file}",
+    "-o",
+    "${workspaceFolder}/bin/${fileBasenameNoExtension}.exe",
+    "-I", "${workspaceFolder}/include/",
+    "-I", "${workspaceFolder}/include/ftxui/",
+    "-L", "${workspaceFolder}/lib/",
+    "-lftxui-component",
+    "-lftxui-dom",
+    "-lftxui-screen",
+    "-lstdc++fs"
+],
+"options": {
+    "cwd": "${fileDirname}"
+},
+"problemMatcher": [
+    "$gcc"
+],
+"group": "build",
+"detail": "compiler: C:\\msys64\\ucrt64\\bin\\g++.exe"
+}
     ]
 }
+
