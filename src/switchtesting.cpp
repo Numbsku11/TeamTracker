@@ -1,40 +1,4 @@
-//
-
-//
 #include <headers.h> 
-namespace fs = std::filesystem;
-bool debugBool = 0; 
-
-struct Teams
-{
-    int teamID;
-    std::string teamName;
-    std::string teamMembers;
-    int teamScore;
-};
-struct Individuals
-{
-    int IndividualID;
-    std::string IndividualFirstName;
-    std::string IndividualLastName;
-    int individualScore;
-};
-
-void saveTeams()
-{
-
-}
-
-void extractionHandle()
-{
-    
-}
-
-void mkdirHandle()
-{
-    fs::path file = "funk";
-    std::cout << fs::current_path(); 
-}
 
 
 
@@ -68,30 +32,6 @@ void processCommand(const std::string& command)
 {
     switch (hashString(command)) 
     {
-        case StringCodes::mkdirtest:
-            if (debugBool == 1)
-            {
-                std::cout << "debug: directory creation, path & deletion" << std::endl;
-            }
-            mkdirHandle(); 
-        break;
-        
-        case StringCodes::debug:
-            //simple logic to enable or disable the debug flag 
-            if (debugBool != 1)
-            {
-                debugBool = 1;
-                std::cout << "debug set to:\t" << debugBool << std::endl;
-            }
-            
-            else 
-            {
-                debugBool = 0;
-                std::cout << "debug set to:\t" << debugBool << std::endl; 
-            }
-        break;
-        
-        
         case StringCodes::junkPrinter:
             // test to ensure that the clear func removes everything in the terminal
             std::cout << "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n Donec commodo ante nec diam venenatis consequat. Mauris tristique lacus id neque faucibus laoreet.\n Etiam urna tortor, cursus vitae eros eu, tristique vulputate dolor.\n Phasellus at metus ipsum. Praesent in orci vitae odio viverra vehicula a id sapien.\n Maecenas sapien est, sodales a erat at, dictum cursus tortor.\n Etiam sagittis est quis augue efficitur, ultricies consectetur metus fermentum. Integer nisi sapien, elementum vel nibh sit amet, interdum ultricies neque.\n Aliquam lobortis consectetur ex vestibulum accumsan. \nDonec urna purus, venenatis sit amet diam vel, accumsan gravida leo. Ut et aliquet lacus."
@@ -124,8 +64,6 @@ int main()
         // takes the string from above and changes every character to be lowercase 
         std::transform(starterString.begin(),starterString.end(),
         starterString.begin() ,[](unsigned char c) {return std::tolower(c);});
-    
-        if (starterString != "debug" && debugBool == 1)
     {
         std::cout << "debug: lowerstring: \t" << starterString << std::endl;
     }
