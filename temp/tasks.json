@@ -1,0 +1,88 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "C/C++: g++.exe build entire project (debug)",
+            "command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+            "args": [
+                "-std=c++17",
+                "-fdiagnostics-color=always",
+                "-g",
+                "${workspaceFolder}/src/main.cpp",
+                "${workspaceFolder}/src/Menu.cpp",
+                "${workspaceFolder}/src/DataManager.cpp",
+                "-o",
+                "${workspaceFolder}/bin/TeamTracker_Debug.exe",
+                "-I", "${workspaceFolder}/include/"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": ["$gcc"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "compiler: C:\\msys64\\ucrt64\\bin\\g++.exe"
+        },
+        
+        {
+            "type": "cppbuild",
+            "label": "C/C++: g++.exe build entire project (optimized)",
+            "command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+            "args": [
+                "-std=c++17",
+                "-O3",
+                "-march=native",
+                "-flto",
+                "-DNDEBUG",
+                "-static",
+                "${workspaceFolder}/src/main.cpp",
+                "${workspaceFolder}/src/Menu.cpp",
+                "${workspaceFolder}/src/DataManager.cpp",
+                "-o",
+                "${workspaceFolder}/bin/TeamTracker.exe",
+                "-I", "${workspaceFolder}/include/"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": ["$gcc"],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "detail": "compiler: C:\\msys64\\ucrt64\\bin\\g++.exe"
+        },
+        
+        {
+            "type": "cppbuild",
+            "label": "C/C++: g++.exe build active file",
+            "command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "${file}",
+                "-o",
+                "${workspaceFolder}/bin/${fileBasenameNoExtension}.exe",
+                "-I", "${workspaceFolder}/include/",
+                "-I", "${workspaceFolder}/include/ftxui/",
+                "-L", "${workspaceFolder}/lib/",
+                "-lftxui-component",
+                "-lftxui-dom",
+                "-lftxui-screen",
+                "-lstdc++fs"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": ["$gcc"],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "detail": "compiler: C:\\msys64\\ucrt64\\bin\\g++.exe"
+        }
+    ]
+}
