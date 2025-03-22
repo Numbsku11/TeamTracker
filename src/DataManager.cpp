@@ -2,6 +2,9 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <filesystem> // Include filesystem for path handling
+
+namespace fs = std::filesystem;
 
 void saveData
 (
@@ -10,11 +13,14 @@ void saveData
     const std::vector<Event>& events
 ) 
 {
-    std::ofstream outFile("data.csv");
-    
+    // Get the directory of the executable
+    fs::path exePath = fs::current_path();
+    fs::path filePath = exePath / "data.csv";
+
+    std::ofstream outFile(filePath);
     if (!outFile) 
     {
-        std::cerr << "Error: Could not open file for saving!" << std::endl;
+        std::cerr << "Error: Could not open file for saving at " << filePath << "!" << std::endl;
         return;
     }
 
@@ -23,7 +29,6 @@ void saveData
     for (const auto& team : teams) 
     {
         outFile << team.name << "," << team.score << "\n";
-        
         for (const auto& member : team.members) 
         {
             outFile << "Member," << member.name << "," << member.isTeamMember << "," << member.teamID << "\n";
@@ -58,10 +63,14 @@ void loadData
     std::vector<Event>& events
 ) 
 {
-    std::ifstream inFile("data.csv");
+    // Get the directory of the executable
+    fs::path exePath = fs::current_path();
+    fs::path filePath = exePath / "data.csv";
+
+    std::ifstream inFile(filePath);
     if (!inFile) 
     {
-        std::cerr << "No saved data found. Starting fresh!" << std::endl;
+        std::cerr << "No saved data found at " << filePath << ". Starting fresh!" << std::endl;
         return;
     }
 
@@ -73,13 +82,11 @@ void loadData
             section = "Teams";
             continue;
         } 
-        
         else if (line == "Individuals") 
         {
             section = "Individuals";
             continue;
         } 
-        
         else if (line == "Events") 
         {
             section = "Events";
@@ -88,7 +95,6 @@ void loadData
 
         std::istringstream ss(line);
         std::string token;
-        
         if (section == "Teams") 
         {
             if (line.find("Member") == 0) 
@@ -107,7 +113,6 @@ void loadData
                 ss >> member.teamID;
                 teams.back().members.push_back(member);
             } 
-            
             else 
             {
                 Team team;
@@ -116,7 +121,6 @@ void loadData
                 teams.push_back(team);
             }
         } 
-        
         else if (section == "Individuals") 
         {
             Competitor individual;
@@ -126,7 +130,6 @@ void loadData
             ss >> individual.teamID;
             individuals.push_back(individual);
         } 
-        
         else if (section == "Events") 
         {
             if (line.find("Score") == 0) 
@@ -144,7 +147,6 @@ void loadData
                 ss >> score;
                 events.back().scores[id] = score;
             } 
-            
             else 
             {
                 Event event;
