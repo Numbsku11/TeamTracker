@@ -7,6 +7,7 @@
 #include <cctype>    
 #include <limits>    
 // Define the enums for commands
+
 enum class StringCodes {
     listTeams,
     listIndividuals,
@@ -20,13 +21,17 @@ enum class StringCodes {
 };
 
 // Normalize input
-std::string normalizeInput(const std::string& input) {
+std::string normalizeInput(const std::string& input) 
+{
+    // Debug: Print input before normalization
+    //std::cout << "Debug: Input before normalization: \"" << input << "\"" << std::endl;
+
     // Trim leading and trailing spaces
     size_t start = input.find_first_not_of(" \t");
     size_t end = input.find_last_not_of(" \t");
     std::string trimmed = (start == std::string::npos) ? "" : input.substr(start, end - start + 1);
 
-    // Remove all spaces
+    // Remove all spaces from the string
     trimmed.erase(std::remove(trimmed.begin(), trimmed.end(), ' '), trimmed.end());
 
     // Convert to lowercase
@@ -34,11 +39,19 @@ std::string normalizeInput(const std::string& input) {
         return std::tolower(c);
     });
 
+    // Debug: Print output after normalization
+    //std::cout << "Debug: Output after normalization: \"" << trimmed << "\"" << std::endl;
+
     return trimmed;
 }
 
 // Map commands to enums
 StringCodes hashString(const std::string& SourceString) {
+    std::string normalizedInput = normalizeInput(SourceString);
+
+    // Debug output
+    //std::cout << "Debug: Normalized input: " << normalizedInput << std::endl;
+
     static const std::unordered_map<std::string, StringCodes> commandMap = {
         {"listteams", StringCodes::listTeams},
         {"listindividuals", StringCodes::listIndividuals},
@@ -50,7 +63,6 @@ StringCodes hashString(const std::string& SourceString) {
         {"exit", StringCodes::exit}
     };
 
-    std::string normalizedInput = normalizeInput(SourceString);
     auto it = commandMap.find(normalizedInput);
     return (it != commandMap.end()) ? it->second : StringCodes::unknown;
 }
@@ -86,7 +98,7 @@ void displayMenu() {
 
 void menuHold() {
     std::cout << "\nHit Enter to return to the menu...";
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+    std::cin.ignore(std::cin.rdbuf()->in_avail(), '\n'); // Clear any leftover input in the buffer
     std::cin.get(); // Wait for the user to press Enter
 }
 

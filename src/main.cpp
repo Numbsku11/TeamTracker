@@ -14,7 +14,7 @@ int main() {
     std::string command;
     do {
         displayMenu();
-        std::cin >> command;
+        std::getline(std::cin, command); // Read the entire line, including spaces
         processCommand(command, teams, individuals, events);
 
         saveData(teams, individuals, events);
