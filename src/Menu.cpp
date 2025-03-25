@@ -100,9 +100,9 @@ void displayMenu() {
 }
 
 void menuHold() {
-    std::cout << "\nHit Enter to return to the menu...";
-    std::cin.ignore(std::cin.rdbuf()->in_avail(), '\n'); // Clear any leftover input in the buffer
-    std::cin.get(); // Wait for the user to press Enter
+    // std::cout << "\nHit Enter to return to the menu...";
+    // std::cin.ignore(std::cin.rdbuf()->in_avail(), '\n'); // Clear any leftover input in the buffer
+    // std::cin.get(); // Wait for the user to press Enter
     return;
 }
 
