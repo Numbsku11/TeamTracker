@@ -22,10 +22,9 @@ enum class StringCodes {
 };
 
 // Normalize input
-std::string normalizeInput(const std::string& input) 
+std::string normaliseInput(const std::string& input) 
 {
-    // Debug: Print input before normalization
-    //std::cout << "Debug: Input before normalization: \"" << input << "\"" << std::endl;
+    
 
     // Trim leading and trailing spaces
     size_t start = input.find_first_not_of(" \t");
@@ -33,22 +32,28 @@ std::string normalizeInput(const std::string& input)
     std::string trimmed = (start == std::string::npos) ? "" : input.substr(start, end - start + 1);
 
     // Remove all spaces from the string
-    trimmed.erase(std::remove(trimmed.begin(), trimmed.end(), ' '), trimmed.end());
+    trimmed.erase
+    (
+        std::remove(trimmed.begin(), 
+        trimmed.end(), ' '), 
+        trimmed.end());
 
     // Convert to lowercase
-    std::transform(trimmed.begin(), trimmed.end(), trimmed.begin(), [](unsigned char c) {
-        return std::tolower(c);
-    });
+    std::transform
+    (
+        trimmed.begin(), 
+        trimmed.end(), 
+        trimmed.begin(), 
+        [](unsigned char c) 
+        {return std::tolower(c);});
 
-    // Debug: Print output after normalization
-    //std::cout << "Debug: Output after normalization: \"" << trimmed << "\"" << std::endl;
-
+    
     return trimmed;
 }
 
 // Map commands to enums
 StringCodes hashString(const std::string& SourceString) {
-    std::string normalizedInput = normalizeInput(SourceString);
+    std::string normalizedInput = normaliseInput(SourceString);
 
     // Debug output
     //std::cout << "Debug: Normalized input: " << normalizedInput << std::endl;
@@ -70,7 +75,8 @@ StringCodes hashString(const std::string& SourceString) {
 }
 
 // Clear screen utility
-void clearScreen() {
+void clearScreen() 
+{
 #ifdef _WIN32
     system("CLS");
 #else
@@ -78,7 +84,8 @@ void clearScreen() {
 #endif
 }
 
-void displayMenu() {
+void displayMenu() 
+{
     
     std::cout << "\nTeam Tracker\n";
     std::cout << "---------------------\n";
@@ -99,10 +106,13 @@ void displayMenu() {
     std::cout << "Enter your command: ";
 }
 
-void menuHold() {
-    // std::cout << "\nHit Enter to return to the menu...";
-    // std::cin.ignore(std::cin.rdbuf()->in_avail(), '\n'); // Clear any leftover input in the buffer
-    // std::cin.get(); // Wait for the user to press Enter
+void menuHold() 
+{
+    std::cout << "\nHit Enter to return to the menu...";
+    
+    // Clear any leftover input in the buffer
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+    std::cin.get(); // Wait for the user to press Enter
     return;
 }
 
@@ -118,15 +128,22 @@ bool processCommand
 {
     bool dataModified = false; // Track if data was modified
 
-    switch (hashString(command)) {
+    switch (hashString(command))
+    {
         case StringCodes::listTeams:
             clearScreen();
             if (teams.empty()) {
                 std::cout << "No teams have been registered yet!" << std::endl;
-            } else {
-                for (const auto& team : teams) {
+            } 
+            
+            else 
+            {
+                for (const auto& team : teams) 
+                {
                     std::cout << "Team: " << team.name << "\nMembers:\n";
-                    for (const auto& member : team.members) {
+                    
+                    for (const auto& member : team.members) 
+                    {
                         std::cout << "- " << member.name << std::endl;
                     }
                 }
@@ -136,112 +153,144 @@ bool processCommand
 
         case StringCodes::listIndividuals:
             clearScreen();
-            if (individuals.empty()) {
+            
+            if (individuals.empty()) 
+            {
                 std::cout << "No individuals have been registered yet!" << std::endl;
-            } else {
+            } else 
+            
+            {
                 std::cout << "Individual Participants:\n";
-                for (const auto& individual : individuals) {
+                for (const auto& individual : individuals) 
+                {
                     std::cout << "- " << individual.name << std::endl;
                 }
             }
+            
             menuHold();
             break;
 
         case StringCodes::listEvents:
             clearScreen();
-            if (events.empty()) {
+            
+            if (events.empty()) 
+            {
                 std::cout << "No events have been created yet!" << std::endl;
-            } else {
+            } 
+            
+            else 
+            {
                 std::cout << "\n--------------------------\n";
                 std::cout << "Team events:\n";
-                for (const auto& event : events) {
-                    if (event.isTeamEvent) {
+                for (const auto& event : events) 
+                {
+                    if (event.isTeamEvent) 
+                    {
                         std::cout << "\t" << event.name << " (Team Event)\n";
                     }
                 }
+                
                 std::cout << "\n--------------------------\n";
                 std::cout << "Individual events:\n";
-                for (const auto& event : events) {
-                    if (!event.isTeamEvent) {
+                for (const auto& event : events) 
+                {
+                    if (!event.isTeamEvent) 
+                    {
                         std::cout << "\t" << event.name << " (Individual Event)\n";
                     }
                 }
             }
+            
             menuHold();
             break;
 
-        case StringCodes::listLeaderboard: {
+        case StringCodes::listLeaderboard: 
+        {
             clearScreen();
 
             // Team Leaderboard
             std::cout << "\n--------------------------\n";
             std::cout << "Team Leaderboard:\n";
-            for (const auto& team : teams) {
+            for (const auto& team : teams) 
+            {
                 int totalScore = 0;
                 int eventsParticipated = 0;
 
                 for (const auto& event : events) {
-                    if (event.isTeamEvent && event.scores.find(&team - &teams[0]) != event.scores.end()) {
+                    if (event.isTeamEvent && event.scores.find(&team - &teams[0]) != event.scores.end()) 
+                    {
                         totalScore += event.scores.at(&team - &teams[0]);
                         eventsParticipated++;
                     }
                 }
 
                 std::cout << "\t" << team.name << " - Total Score: " << totalScore
-                          << " (Events Participated: " << eventsParticipated << ")\n";
+                << " (Events Participated: " << eventsParticipated << ")\n";
             }
 
             std::cout << "\n--------------------------\n";
 
             // Individual Leaderboard
             std::cout << "Individual Leaderboard:\n";
-            for (const auto& individual : individuals) {
+            for (const auto& individual : individuals) 
+            {
                 int totalScore = 0;
                 int eventsParticipated = 0;
 
-                for (const auto& event : events) {
-                    if (!event.isTeamEvent && event.scores.find(&individual - &individuals[0]) != event.scores.end()) {
+                for (const auto& event : events) 
+                {
+                    if (!event.isTeamEvent && event.scores.find(&individual - &individuals[0]) != event.scores.end()) 
+                    {
                         totalScore += event.scores.at(&individual - &individuals[0]);
                         eventsParticipated++;
                     }
                 }
 
                 std::cout << "\t" << individual.name << " - Total Score: " << totalScore
-                          << " (Events Participated: " << eventsParticipated << ")\n";
+                << " (Events Participated: " << eventsParticipated << ")\n";
             }
-
+            
             std::cout << "\n--------------------------\n";
-
             menuHold();
             break;
         }
 
         case StringCodes::createTeam: {
             clearScreen();
-            if (teams.size() >= 4) {
+            
+            if (teams.size() >= 4) 
+            {
                 std::cout << "Maximum number of teams reached!" << std::endl;
                 break;
             }
+            
             std::string teamName;
             std::cout << "Enter team name: ";
             std::cin >> teamName;
             std::vector<std::string> memberNames;
-            for (int i = 0; i < 5; i++) {
+            
+            for (int i = 0; i < 5; i++) 
+            {
                 std::string memberName;
                 std::cout << "Enter member " << i + 1 << " name: ";
                 std::cin >> memberName;
                 memberNames.push_back(memberName);
             }
+            
             Team newTeam{teamName, {}, 0};
             int teamID = teams.size();
-            for (const auto& name : memberNames) {
+            
+            for (const auto& name : memberNames) 
+            {
                 newTeam.members.push_back({name, true, teamID});
             }
             teams.push_back(newTeam);
 
             std::cout << "\nTeam created successfully:\n";
             std::cout << "Team Name: " << newTeam.name << "\nMembers:\n";
-            for (const auto& member : newTeam.members) {
+            
+            for (const auto& member : newTeam.members) 
+            {
                 std::cout << "- " << member.name << std::endl;
             }
 
@@ -250,13 +299,17 @@ bool processCommand
             break;
         }
 
-        case StringCodes::createIndividual: {
+        case StringCodes::createIndividual: 
+        {
             clearScreen();
-            if (individuals.size() >= 20) {
+            
+            if (individuals.size() >= 20) 
+            {
                 std::cout << "Maximum number of individual competitors reached!" << std::endl;
                 menuHold();
                 break;
             }
+            
             std::string name;
             std::cout << "Enter individual competitor name: ";
             std::cin >> name;
@@ -270,10 +323,12 @@ bool processCommand
             break;
         }
 
-        case StringCodes::createEvent: {
+        case StringCodes::createEvent: 
+        {
             clearScreen();
             std::string name;
             bool isTeamEvent;
+            
             std::cout << "Enter event name: ";
             std::cin >> name;
             std::cout << "Is this a team event? (1 for yes, 0 for no): ";
@@ -289,9 +344,12 @@ bool processCommand
             break;
         }
 
-        case StringCodes::assignScore: {
+        case StringCodes::assignScore: 
+        {
             clearScreen();
-            if (events.empty()) {
+            
+            if (events.empty()) 
+            {
                 std::cout << "No events have been created yet!" << std::endl;
                 menuHold();
                 break;
@@ -299,16 +357,19 @@ bool processCommand
 
             // Display events
             std::cout << "Available Events:\n";
-            for (size_t i = 0; i < events.size(); ++i) {
+            for (size_t i = 0; i < events.size(); ++i) 
+            {
                 std::cout << i << ": " << events[i].name
-                        << (events[i].isTeamEvent ? " (Team Event)" : " (Individual Event)") << std::endl;
+                << (events[i].isTeamEvent ? " (Team Event)" : " (Individual Event)") << std::endl;
             }
 
             // Select an event
             int eventIndex;
             std::cout << "Enter the event index: ";
             std::cin >> eventIndex;
-            if (eventIndex < 0 || eventIndex >= events.size()) {
+            
+            if (eventIndex < 0 || eventIndex >= events.size()) 
+            {
                 std::cout << "Invalid event index!" << std::endl;
                 menuHold();
                 break;
@@ -317,11 +378,15 @@ bool processCommand
             Event& selectedEvent = events[eventIndex];
 
             // Assign positions and award points
-            if (selectedEvent.isTeamEvent) {
+            if (selectedEvent.isTeamEvent) 
+            {
+            
                 // Input positions for each team
                 std::vector<std::pair<int, int>> teamPositions; // Pair of teamID and position
                 std::cout << "Enter positions for each team (1 for first, 2 for second, etc.):\n";
-                for (size_t i = 0; i < teams.size(); ++i) {
+                
+                for (size_t i = 0; i < teams.size(); ++i) 
+                {
                     int position;
                     std::cout << "Team " << teams[i].name << ": ";
                     std::cin >> position;
@@ -329,24 +394,36 @@ bool processCommand
                 }
 
                 // Sort teams by their positions
-                std::sort(teamPositions.begin(), teamPositions.end(), [](const auto& a, const auto& b) {
+                std::sort
+                (teamPositions.begin(), 
+                teamPositions.end(), 
+                [](const auto& a, const auto& b) 
+                
+                {
                     return a.second < b.second; // Sort in ascending order of positions
                 });
 
                 // Assign points based on position
-                std::vector<int> points = {20, 15, 10, 5}; // Points for top 4 positions
-                for (size_t i = 0; i < teamPositions.size() && i < points.size(); ++i) {
+                std::vector <int> points = {20, 15, 10, 5}; // Points for top 4 positions
+                
+                for (size_t i = 0; i < teamPositions.size() && i < points.size(); ++i) 
+                {
                     int teamID = teamPositions[i].first;
                     teams[teamID].score += points[i]; // Add points to the team's total score
                     selectedEvent.scores[teamID] = points[i]; // Store the points in the event
                     std::cout << "Team " << teams[teamID].name << " awarded " << points[i] << " points.\n";
                 }
 
-            } else {
+            } 
+            
+            else 
+            {
                 // Input positions for each individual
                 std::vector<std::pair<int, int>> individualPositions; // Pair of individualID and position
                 std::cout << "Enter positions for each individual (1 for first, 2 for second, etc.):\n";
-                for (size_t i = 0; i < individuals.size(); ++i) {
+                
+                for (size_t i = 0; i < individuals.size(); ++i) 
+                {
                     int position;
                     std::cout << "Individual " << individuals[i].name << ": ";
                     std::cin >> position;
@@ -354,17 +431,26 @@ bool processCommand
                 }
 
                 // Sort individuals by their positions
-                std::sort(individualPositions.begin(), individualPositions.end(), [](const auto& a, const auto& b) {
+                std::sort
+                (
+                    individualPositions.begin(), 
+                    individualPositions.end(), 
+                    [](const auto& a, const auto& b) 
+                
+                {
                     return a.second < b.second; // Sort in ascending order of positions
                 });
 
                 // Assign points based on position
-                for (size_t i = 0; i < individualPositions.size() && i < 20; ++i) {
+                for (size_t i = 0; i < individualPositions.size() && i < 20; ++i) 
+                {
                     int individualID = individualPositions[i].first;
                     int points = 20 - i; // Points decrease from 20 to 1
+                    
                     individuals[individualID].score += points; // Add points to the individual's total score
                     selectedEvent.scores[individualID] = points; // Store the points in the event
-                    std::cout << "Individual " << individuals[individualID].name << " awarded " << points << " points.\n";
+                    std::cout << "Individual " << individuals[individualID].name 
+                    << " awarded " << points << " points.\n";
                 }
             }
 
