@@ -17,7 +17,7 @@ enum class StringCodes {
     createIndividual,
     createEvent,
     assignScore, // New command
-    exit,
+    help,
     unknown
 };
 
@@ -52,13 +52,15 @@ std::string normaliseInput(const std::string& input)
 }
 
 // Map commands to enums
-StringCodes hashString(const std::string& SourceString) {
+StringCodes hashString(const std::string& SourceString) 
+{
     std::string normalizedInput = normaliseInput(SourceString);
 
     // Debug output
     //std::cout << "Debug: Normalized input: " << normalizedInput << std::endl;
 
-    static const std::unordered_map<std::string, StringCodes> commandMap = {
+    static const std::unordered_map <std::string, StringCodes> commandMap = 
+    {
         {"listteams", StringCodes::listTeams},
         {"listindividuals", StringCodes::listIndividuals},
         {"listevents", StringCodes::listEvents},
@@ -66,8 +68,8 @@ StringCodes hashString(const std::string& SourceString) {
         {"createteam", StringCodes::createTeam},
         {"createindividual", StringCodes::createIndividual},
         {"createevent", StringCodes::createEvent},
-        {"addscores", StringCodes::assignScore}, // New command
-        {"exit", StringCodes::exit}
+        {"addscores", StringCodes::assignScore},
+        {"help", StringCodes::help}
     };
 
     auto it = commandMap.find(normalizedInput);
@@ -102,18 +104,22 @@ void displayMenu()
     std::cout << "  Create Individual\n";
     std::cout << "  Create Event\n";
     std::cout << "\nOther:\n";
-    std::cout << "  Exit\n";
+    std::cout << "  Help";
     std::cout << "Enter your command: ";
 }
 
 void menuHold() 
 {
-    std::cout << "\nHit Enter to return to the menu...";
+    std::cout << "\nPress Enter to return to the menu...";
     
     // Clear any leftover input in the buffer
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
-    std::cin.get(); // Wait for the user to press Enter
-    return;
+    
+    // Wait for the user to press Enter
+    while (std::cin.get() != '\n') {
+        // Do nothing, just wait for Enter
+    }
+    clearScreen();
 }
 
 // Process commands
@@ -152,6 +158,8 @@ bool processCommand
             break;
 
         case StringCodes::listIndividuals:
+        {
+
             clearScreen();
             
             if (individuals.empty()) 
@@ -169,8 +177,11 @@ bool processCommand
             
             menuHold();
             break;
+        }
 
         case StringCodes::listEvents:
+        {
+
             clearScreen();
             
             if (events.empty()) 
@@ -203,6 +214,7 @@ bool processCommand
             
             menuHold();
             break;
+        }
 
         case StringCodes::listLeaderboard: 
         {
@@ -255,7 +267,8 @@ bool processCommand
             break;
         }
 
-        case StringCodes::createTeam: {
+        case StringCodes::createTeam: 
+        {
             clearScreen();
             
             if (teams.size() >= 4) 
@@ -459,16 +472,22 @@ bool processCommand
             break;
         }
 
-        case StringCodes::exit:
+        case StringCodes::help:
+        {
             clearScreen();
-            std::cout << "Exiting program..." << std::endl;
+            
+            
+            
             break;
+        }
 
         default:
+        {
             std::cout << "Error, please re-enter a valid command." << std::endl;
             menuHold();
             clearScreen();
             break;
+        }
     }
 
     return dataModified; // Return whether data was modified

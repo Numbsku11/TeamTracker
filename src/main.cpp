@@ -9,7 +9,7 @@ int main() {
     std::vector<Competitor> individuals;
     std::vector<Event> events;
 
-    std::cout << "[DEBUG] Loading data..." << std::endl;
+    //std::cout << "[DEBUG] Loading data..." << std::endl;
 
     // Initialize the CSV file
     initializeCSV();
@@ -23,7 +23,7 @@ int main() {
     do {
         displayMenu();
         std::getline(std::cin, command); // Read the entire line, including spaces
-        std::cout << "[DEBUG] Command entered: " << command << std::endl;
+        //std::cout << "[DEBUG] Command entered: " << command << std::endl;
 
         // Process the command and check if it modifies the data
         if (processCommand(command, teams, individuals, events)) {
@@ -32,7 +32,7 @@ int main() {
 
         // Save data only if it has been modified
         if (dataModified) {
-            std::cout << "[DEBUG] Saving data..." << std::endl;
+            //std::cout << "[DEBUG] Saving data..." << std::endl;
             saveData(teams, individuals, events);
             dataModified = false; // Reset the flag after saving
         }
