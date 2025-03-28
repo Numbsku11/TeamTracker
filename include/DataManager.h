@@ -18,6 +18,6 @@ void loadData(
     std::vector<Event>& events
 );
 
-void initializeCSV(); // New function to initialize the CSV file
+void initialiseCSV(); // New function to initialize the CSV file
 
 #endif // DATAMANAGER_H

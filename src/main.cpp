@@ -1,7 +1,20 @@
 #include "Menu.h"
 #include "DataManager.h"
 #include <vector>
+#include <string>
 #include <iostream>
+
+void MainMenu()
+{
+    using namespace std::string_literals; 
+    
+    std::string text = 
+    R"(
+    
+    To have infomation added later :3 
+    )"; 
+}
+
 
 int main() {
 
@@ -12,7 +25,7 @@ int main() {
     //std::cout << "[DEBUG] Loading data..." << std::endl;
 
     // Initialize the CSV file
-    initializeCSV();
+    initialiseCSV();
 
     // Load existing data
     loadData(teams, individuals, events);

@@ -171,7 +171,7 @@ void loadData
     inFile.close();
 }
 
-void initializeCSV() {
+void initialiseCSV() {
     // Define the directory and file paths
     fs::path dataDir = fs::current_path() / "data";
     fs::path finalFilePath = dataDir / "data.csv";
