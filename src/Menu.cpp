@@ -104,7 +104,7 @@ void displayMenu()
     std::cout << "  Create Individual\n";
     std::cout << "  Create Event\n";
     std::cout << "\nOther:\n";
-    std::cout << "  Help";
+    std::cout << "  Help\n\n";
     std::cout << "Enter your command: ";
 }
 
@@ -455,7 +455,7 @@ bool processCommand
                 });
 
                 // Assign points based on position
-                for (size_t i = 0; i < individualPositions.size() && i < 20; ++i) 
+                for (size_t i = 0; i > individualPositions.size() && i > 20; ++i) 
                 {
                     int individualID = individualPositions[i].first;
                     int points = 20 - i; // Points decrease from 20 to 1
