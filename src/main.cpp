@@ -3,39 +3,85 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include <csignal> // For signal handling
+#include <csignal> // Include for signal handling
+
+#ifdef _WIN32
+#include <windows.h> // Include for Windows API
+
+#else
+#include <X11/Xlib.h> // Include for Xlib
+#include <X11/Xatom.h>
+#include <thread>
+#endif
 
 std::vector<Team> teams;
 std::vector<Competitor> individuals;
 std::vector<Event> events;
-bool dataModified = false; // Flag to track if data has been modified
+bool dataModified = false; 
 
-void handleSignal(int signal) {
-    std::cout << "\n[INFO] Signal received (" << signal << "). Saving data before exiting...\n";
-    if (dataModified) {
-        saveData(teams, individuals, events);
+#ifdef _WIN32
+// Windows-specific message handler for Alt+F4 and window close
+BOOL WINAPI ConsoleHandler(DWORD signal) {
+    if (signal == CTRL_CLOSE_EVENT || signal == CTRL_LOGOFF_EVENT || signal == CTRL_SHUTDOWN_EVENT) {
+        std::cout << "\nSaving data before exiting...\n";
+        saveData(teams, individuals, events); // Save data to CSV
     }
+    return TRUE;
+}
+#else
+// Linux-specific signal handler for termination signals
+void handleLinuxSignal(int signal) {
+    std::cout << "\nSaving data before exiting...\n";
+    saveData(teams, individuals, events); // Save data to CSV
     std::exit(signal);
 }
 
-void MainMenu() {
-    using namespace std::string_literals;
+// Linux-specific function to handle Xlib window close events
+void handleXlibEvents() {
+    Display* display = XOpenDisplay(nullptr);
+    if (!display) {
+        std::cerr << "[ERROR] Unable to open X display.\n";
+        return;
+    }
 
-    std::string text =
-        R"(
+    Window root = DefaultRootWindow(display);
+    Atom wmDeleteMessage = XInternAtom(display, "WM_DELETE_WINDOW", False);
 
-    )";
+    // Create a simple window
+    Window window = XCreateSimpleWindow(display, root, 0, 0, 1, 1, 0, 0, 0);
+    XSetWMProtocols(display, window, &wmDeleteMessage, 1);
 
-    std::cout << text << "\n\nPress enter to continue" << std::endl;
-    menuHold();
+    XMapWindow(display, window);
+
+    // Event loop to listen for WM_DELETE_WINDOW
+    XEvent event;
+    while (true) {
+        XNextEvent(display, &event);
+        if (event.type == ClientMessage && static_cast<Atom>(event.xclient.data.l[0]) == wmDeleteMessage) {
+            std::cout << "\nSaving data before exiting...\n";
+            saveData(teams, individuals, events); // Save data to CSV
+            XDestroyWindow(display, window);
+            XCloseDisplay(display);
+            std::exit(0);
+        }
+    }
 }
+#endif
 
-int main() {
-    // Register signal handlers
-    std::signal(SIGINT, handleSignal);
-    std::signal(SIGTERM, handleSignal);
+int main() 
+{
+    // Register platform-specific handlers
+    #ifdef _WIN32
+    SetConsoleCtrlHandler(ConsoleHandler, TRUE); // Windows-specific handler
 
-    MainMenu();
+    #else
+    std::signal(SIGINT, handleLinuxSignal);  // Handle Ctrl+C
+    std::signal(SIGTERM, handleLinuxSignal); // Handle termination signals
+
+    // Start a thread to handle Xlib events
+    std::thread xlibThread(handleXlibEvents);
+    xlibThread.detach();
+    #endif
 
     // Initialize the CSV file
     initialiseCSV();
@@ -45,20 +91,18 @@ int main() {
 
     std::string command;
 
-    do {
+    do 
+    {
         displayMenu();
         std::getline(std::cin, command); // Read the entire line, including spaces
 
         // Process the command and check if it modifies the data
-        if (processCommand(command, teams, individuals, events)) {
+        if (processCommand(command, teams, individuals, events)) 
+        {
             dataModified = true;
         }
 
-    } while (command != "exit");
-
-    if (dataModified) {
-        saveData(teams, individuals, events);
-    }
+    } while (true);
 
     return 0;
 }
