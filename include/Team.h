@@ -6,15 +6,22 @@
 
 struct Competitor {
     std::string name;
-    bool isTeamMember = false; // Indicates if the competitor is part of a team
-    int teamID = -1;           // -1 if the competitor is an individual
-    int score = 0;             // Total score for the competitor
+    bool isTeamMember;
+    int teamID;
+    int score;
+
+    Competitor() : name(""), isTeamMember(false), teamID(-1), score(0) {} // Default constructor
+    Competitor(const std::string& name, bool isTeamMember = false, int teamID = -1, int score = 0)
+        : name(name), isTeamMember(isTeamMember), teamID(teamID), score(score) {}
 };
 
 struct Team {
     std::string name;
     std::vector<Competitor> members;
-    int score = 0;
+    int score;
+
+    Team() : name(""), score(0) {} // Default constructor
+    Team(const std::string& name, int score = 0) : name(name), score(score) {}
 };
 
 #endif // TEAM_H

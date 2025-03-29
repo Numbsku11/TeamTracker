@@ -3,26 +3,39 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <csignal> // For signal handling
 
-void MainMenu()
-{
-    using namespace std::string_literals; 
-    
-    std::string text = 
-    R"(
-    
-    To have infomation added later :3 
-    )"; 
+std::vector<Team> teams;
+std::vector<Competitor> individuals;
+std::vector<Event> events;
+bool dataModified = false; // Flag to track if data has been modified
+
+void handleSignal(int signal) {
+    std::cout << "\n[INFO] Signal received (" << signal << "). Saving data before exiting...\n";
+    if (dataModified) {
+        saveData(teams, individuals, events);
+    }
+    std::exit(signal);
 }
 
+void MainMenu() {
+    using namespace std::string_literals;
+
+    std::string text =
+        R"(
+
+    )";
+
+    std::cout << text << "\n\nPress enter to continue" << std::endl;
+    menuHold();
+}
 
 int main() {
+    // Register signal handlers
+    std::signal(SIGINT, handleSignal);
+    std::signal(SIGTERM, handleSignal);
 
-    std::vector<Team> teams;
-    std::vector<Competitor> individuals;
-    std::vector<Event> events;
-
-    //std::cout << "[DEBUG] Loading data..." << std::endl;
+    MainMenu();
 
     // Initialize the CSV file
     initialiseCSV();
@@ -31,25 +44,21 @@ int main() {
     loadData(teams, individuals, events);
 
     std::string command;
-    bool dataModified = false; // Flag to track if data has been modified
 
     do {
         displayMenu();
         std::getline(std::cin, command); // Read the entire line, including spaces
-        //std::cout << "[DEBUG] Command entered: " << command << std::endl;
 
         // Process the command and check if it modifies the data
         if (processCommand(command, teams, individuals, events)) {
             dataModified = true;
         }
 
-        // Save data only if it has been modified
-        if (dataModified) {
-            //std::cout << "[DEBUG] Saving data..." << std::endl;
-            saveData(teams, individuals, events);
-            dataModified = false; // Reset the flag after saving
-        }
     } while (command != "exit");
+
+    if (dataModified) {
+        saveData(teams, individuals, events);
+    }
 
     return 0;
 }

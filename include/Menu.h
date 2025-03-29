@@ -15,4 +15,5 @@ bool processCommand(
 );
 void clearScreen(); // Add this declaration
 
+void menuHold();
 #endif // MENU_H

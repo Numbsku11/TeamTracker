@@ -24,31 +24,16 @@ enum class StringCodes {
 // Normalize input
 std::string normaliseInput(const std::string& input) 
 {
-    
+    std::string normalized;
+    normalized.reserve(input.size());
 
-    // Trim leading and trailing spaces
-    size_t start = input.find_first_not_of(" \t");
-    size_t end = input.find_last_not_of(" \t");
-    std::string trimmed = (start == std::string::npos) ? "" : input.substr(start, end - start + 1);
+    for (char c : input) {
+        if (!std::isspace(c)) {
+            normalized += std::tolower(c);
+        }
+    }
 
-    // Remove all spaces from the string
-    trimmed.erase
-    (
-        std::remove(trimmed.begin(), 
-        trimmed.end(), ' '), 
-        trimmed.end());
-
-    // Convert to lowercase
-    std::transform
-    (
-        trimmed.begin(), 
-        trimmed.end(), 
-        trimmed.begin(), 
-        [](unsigned char c) 
-        {return std::tolower(c);});
-
-    
-    return trimmed;
+    return normalized;
 }
 
 // Map commands to enums
@@ -290,7 +275,7 @@ bool processCommand
                 memberNames.push_back(memberName);
             }
             
-            Team newTeam{teamName, {}, 0};
+            Team newTeam(teamName, 0); // Correct constructor usage
             int teamID = teams.size();
             
             for (const auto& name : memberNames) 

@@ -112,7 +112,7 @@ void loadData
         if (section == "Teams") 
         {
             if (line.find("Member") == 0) {
-                Competitor member;
+                Competitor member; // Use default constructor
                 std::getline(ss, token, ','); // Skip "Member"
                 std::getline(ss, member.name, ',');
                 std::getline(ss, token, ',');
@@ -126,7 +126,7 @@ void loadData
             
             else 
             {
-                Team team;
+                Team team; // Use default constructor
                 std::getline(ss, team.name, ',');
                 std::getline(ss, token, ',');
                 team.score = std::stoi(token);
@@ -136,7 +136,7 @@ void loadData
         
         else if (section == "Individuals") 
         {
-            Competitor individual;
+            Competitor individual; // Use default constructor
             std::getline(ss, individual.name, ',');
             std::getline(ss, token, ',');
             individual.isTeamMember = std::stoi(token);
@@ -195,46 +195,23 @@ void initialiseCSV() {
     {
         try 
         {
-            std::ifstream inFile(finalFilePath);
+            std::ifstream inFile(finalFilePath, std::ios::ate);
             if (!inFile.is_open()) 
             {
                 throw std::ios_base::failure("Failed to open CSV file for reading.");
             }
 
-            // Read the file to check for headers
-            std::string line;
-            bool hasTeams = false, 
-            hasIndividuals = false, 
-            hasEvents = false;
-
-            while (std::getline(inFile, line)) 
-            {
-                if (line == "Teams") hasTeams = true;
-                else if (line == "Individuals") hasIndividuals = true;
-                else if (line == "Events") hasEvents = true;
-            }
-
-            inFile.close();
-
-            // Add missing headers if necessary
-            if (!hasTeams || !hasIndividuals || !hasEvents) 
-            {
-                std::ofstream outFile(finalFilePath, std::ios::out | std::ios::app);
-                if (!outFile.is_open()) {
-                    throw std::ios_base::failure("Failed to open CSV file for appending.");
-                }
-
-                if (!hasTeams) outFile << "Teams\n";
-                if (!hasIndividuals) outFile << "Individuals\n";
-                if (!hasEvents) outFile << "Events\n";
-
+            if (inFile.tellg() == 0) { // File is empty
+                inFile.close();
+                std::ofstream outFile(finalFilePath, std::ios::out | std::ios::trunc);
+                outFile << "Teams\nIndividuals\nEvents\n";
                 outFile.close();
             }
         } 
         
         catch (const std::exception& e) 
         {
-            std::cerr << "[ERROR] Exception occurred while verifying CSV headers: " << e.what() << std::endl;
+            std::cerr << "[ERROR] Exception occurred while verifying CSV file: " << e.what() << std::endl;
         }
     } 
     
