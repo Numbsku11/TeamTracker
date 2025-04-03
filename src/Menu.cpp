@@ -16,7 +16,7 @@ enum class StringCodes {
     createTeam,
     createIndividual,
     createEvent,
-    assignScore, // New command
+    assignScore, 
     help,
     unknown
 };
