@@ -4,7 +4,7 @@
 #include <vector>
 #include <unordered_map>
 #include <algorithm>
-#include <cctype>    
+#include <cctype>   
 #include <limits>    
 
 // Define the enums for commands
@@ -82,7 +82,7 @@ int openHelpFile()
 #else
     std::string Nano = "nano " + std::string(HelpFile);    
     
-    int RunTime = system(nano.c_str()); 
+    int RunTime = system(Nano.c_str()); 
 
 #endif
 
