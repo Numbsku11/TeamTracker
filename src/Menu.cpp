@@ -6,8 +6,8 @@
 #include <algorithm>
 #include <cctype>    
 #include <limits>    
-// Define the enums for commands
 
+// Define the enums for commands
 enum class StringCodes {
     listTeams,
     listIndividuals,
@@ -70,6 +70,34 @@ void clearScreen()
     system("clear");
 #endif
 }
+
+int openHelpFile()
+{
+    const char* HelpFile = "help.txt";
+    
+#ifdef _WIN32
+    std::string NotePad = "notepad " + std::string(HelpFile);    
+    
+    int RunTime = system(NotePad.c_str()); 
+#else
+    std::string Nano = "nano " + std::string(HelpFile);    
+    
+    int RunTime = system(nano.c_str()); 
+
+#endif
+
+    if (RunTime == 0)
+    {
+        std::cout << "Help file opened";
+    }
+
+    else
+    {
+        std::cout << "unable to open help file";
+    }
+    return 0;
+}
+
 
 void displayMenu() 
 {
@@ -460,8 +488,8 @@ bool processCommand
         case StringCodes::help:
         {
             clearScreen();
-            
-            
+            openHelpFile(); 
+            menuHold(); 
             
             break;
         }
