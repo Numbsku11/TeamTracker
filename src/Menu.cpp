@@ -79,13 +79,13 @@ int openHelpFile()
     std::string NotePad = "notepad " + std::string(HelpFile);    
     
     int RunTime = system(NotePad.c_str()); 
+
 #else
     std::string Nano = "nano " + std::string(HelpFile);    
     
     int RunTime = system(Nano.c_str()); 
 
 #endif
-
     if (RunTime == 0)
     {
         std::cout << "Help file opened";
@@ -105,20 +105,19 @@ void displayMenu()
     std::cout << "\nTeam Tracker\n";
     std::cout << "---------------------\n";
     std::cout << "Menu Options:\n\n";
-    std::cout << "Participants:\n";
-    std::cout << "  List Teams\n";
-    std::cout << "  List Individuals\n";
-    std::cout << "\nEvents:\n";
-    std::cout << "  Add Scores \n";    
-    std::cout << "  List Events\n";
-    std::cout << "  List Leaderboard\n";
     std::cout << "\nCreate:\n";
     std::cout << "  Create Team\n";
     std::cout << "  Create Individual\n";
     std::cout << "  Create Event\n";
+    std::cout << "\nCompetitors and Events:\n";
+    std::cout << "  Add Scores \n";    
+    std::cout << "  List Events\n";
+    std::cout << "  List Leaderboard\n";
+    std::cout << "  List Teams\n";
+    std::cout << "  List Individuals\n";
     std::cout << "\nOther:\n";
     std::cout << "  Help\n\n";
-    std::cout << "Enter your command: ";
+    std::cout << "Enter your command:\t";
 }
 
 void menuHold() 
