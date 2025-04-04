@@ -86,6 +86,7 @@ int openHelpFile()
     int RunTime = system(Nano.c_str()); 
 
 #endif
+    
     if (RunTime == 0)
     {
         std::cout << "Help file opened";
@@ -125,7 +126,7 @@ void menuHold()
     std::cout << "\nPress Enter to return to the menu...";
     
     // Clear any leftover input in the buffer
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+    //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
     
     // Wait for the user to press Enter
     while (std::cin.get() != '\n') {

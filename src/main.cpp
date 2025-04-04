@@ -3,13 +3,13 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include <csignal> // Include for signal handling
+#include <csignal> 
 
 #ifdef _WIN32
-#include <windows.h> // Include for Windows API
+#include <windows.h> 
 
 #else
-#include <X11/Xlib.h> // Include for Xlib
+#include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <thread>
 #endif
@@ -20,11 +20,18 @@ std::vector<Event> events;
 bool dataModified = false; 
 
 #ifdef _WIN32
-// Windows-specific message handler for Alt+F4 and window close
+// Windows-specific message handler for program killing
 BOOL WINAPI ConsoleHandler(DWORD signal) {
-    if (signal == CTRL_CLOSE_EVENT || signal == CTRL_LOGOFF_EVENT || signal == CTRL_SHUTDOWN_EVENT) {
+    if 
+    (
+        signal == CTRL_CLOSE_EVENT || 
+        signal == CTRL_LOGOFF_EVENT || 
+        signal == CTRL_SHUTDOWN_EVENT
+    ) 
+    
+    {
         std::cout << "\nSaving data before exiting...\n";
-        saveData(teams, individuals, events); // Save data to CSV
+        saveData(teams, individuals, events); 
     }
     return TRUE;
 }
@@ -36,7 +43,7 @@ void handleLinuxSignal(int signal) {
     std::exit(signal);
 }
 
-// Linux-specific function to handle Xlib window close events
+// Linux-specific function to handle window close events
 void handleXlibEvents() {
     Display* display = XOpenDisplay(nullptr);
     if (!display) {

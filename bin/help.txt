@@ -6,4 +6,4 @@ This document has been created to detail the standard use of the software provid
 
 
 2. Commands
-
+Commands in general work within their own section. On top of this, if
