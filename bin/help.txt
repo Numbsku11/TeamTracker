@@ -1,0 +1,9 @@
+Team Tracker
+Created by Matthew John Swift
+
+1. Introduction
+This document has been created to detail the standard use of the software provided.
+
+
+2. Commands
+Commands in general work within their own section. On top of this, if
