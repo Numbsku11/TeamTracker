@@ -10,7 +10,7 @@
                 "-g",
                 "${workspaceFolder}/src/main.cpp",
                 "-o",
-                "${workspaceFolder}/bin/FTXUITesting.exe",
+                "${workspaceFolder}/bin/Teamtracker.exe",
                 "-I", "${workspaceFolder}/include/",
                 "-I", "${workspaceFolder}/include/ftxui/",
                 "-L", "${workspaceFolder}/lib/",
