@@ -60,7 +60,7 @@ void launchGUI(
             break;
         case 3: { // Create Team
             std::string teamName;
-            Input teamNameInput(&teamName, "Enter team name");
+            auto teamNameInput = Input(&teamName, "Enter team name");
 
             std::vector<std::string> memberNames(5);
             std::vector<Component> memberInputs;
@@ -72,15 +72,20 @@ void launchGUI(
             formContainer->Add(Container::Vertical(memberInputs));
 
             auto formRenderer = Renderer(formContainer, [&] {
-                return vbox({
+                Elements memberElements;
+                for (auto& input : memberInputs) {
+                    memberElements.push_back(input->Render());
+                }
+
+                return vbox(
                     text("Create Team") | bold | center,
                     separator(),
                     text("Team Name:"),
                     teamNameInput->Render(),
                     separator(),
-                    vbox(memberInputs | transformed([](auto& input) { return input->Render(); })),
+                    vbox(std::move(memberElements)),
                     separator(),
-                    button("Submit", [&] {
+                    Button("Submit", [&] {
                         Team newTeam(teamName);
                         int teamID = teams.size();
                         for (const auto& name : memberNames) {
@@ -89,7 +94,7 @@ void launchGUI(
                         teams.push_back(newTeam);
                         screen.ExitLoopClosure()();
                     }) | center
-                });
+                );
             });
 
             screen.Loop(formRenderer);
@@ -97,22 +102,22 @@ void launchGUI(
         }
         case 4: { // Create Individual
             std::string name;
-            Input nameInput(&name, "Enter individual competitor name");
+            auto nameInput = Input(&name, "Enter individual competitor name");
 
             auto formContainer = Container::Vertical({nameInput});
 
             auto formRenderer = Renderer(formContainer, [&] {
-                return vbox({
+                return vbox(
                     text("Create Individual") | bold | center,
                     separator(),
                     text("Name:"),
                     nameInput->Render(),
                     separator(),
-                    button("Submit", [&] {
+                    Button("Submit", [&] {
                         individuals.push_back({name, false, -1});
                         screen.ExitLoopClosure()();
                     }) | center
-                });
+                );
             });
 
             screen.Loop(formRenderer);
@@ -121,13 +126,13 @@ void launchGUI(
         case 5: { // Create Event
             std::string name;
             bool isTeamEvent = false;
-            Input nameInput(&name, "Enter event name");
-            Checkbox teamEventCheckbox("Is this a team event?", &isTeamEvent);
+            auto nameInput = Input(&name, "Enter event name");
+            auto teamEventCheckbox = Checkbox("Is this a team event?", &isTeamEvent);
 
             auto formContainer = Container::Vertical({nameInput, teamEventCheckbox});
 
             auto formRenderer = Renderer(formContainer, [&] {
-                return vbox({
+                return vbox(
                     text("Create Event") | bold | center,
                     separator(),
                     text("Event Name:"),
@@ -135,11 +140,11 @@ void launchGUI(
                     separator(),
                     teamEventCheckbox->Render(),
                     separator(),
-                    button("Submit", [&] {
+                    Button("Submit", [&] {
                         events.push_back({name, isTeamEvent, {}});
                         screen.ExitLoopClosure()();
                     }) | center
-                });
+                );
             });
 
             screen.Loop(formRenderer);
